@@ -5,6 +5,9 @@ using LiteLoader.AllowList;
 using System.Reactive.Linq;
 using Mirai.Net.Sessions;
 using LiteLoader.Event;
+using Mirai.Net.Data.Messages.Concretes;
+using Mirai.Net.Data.Messages.Receivers;
+using Mirai.Net.Utils.Scaffolds;
 
 namespace PluginMain
 {
@@ -20,6 +23,59 @@ namespace PluginMain
         {
             await bot.LaunchAsync();
             Console.WriteLine("启动异步");
+            
+            bot.MessageReceived
+                .OfType<FriendMessageReceiver>()
+                .Subscribe(x =>
+                {
+                    string plain = x.MessageChain.GetPlainMessage();
+                    if (plain.Contains("添加白名单"))
+                    {
+                        string xboxid = plain.Substring("添加白名单".Length); //("查询玩家");
+                        if (xboxid == String.Empty)
+                        {
+                            x.SendMessageAsync("使用方式：添加白名单[xboxid]");
+                            return;
+                        }                            
+                        else
+                        {
+                            AllowListManager add = new AllowListManager();
+                            add.Add(xboxid);
+                            Console.WriteLine(xboxid);
+                            x.SendMessageAsync($"已经添加{xboxid}的白名单");
+                            Console.WriteLine($"已经添加{xboxid}的白名单");
+                            return;
+                        }
+                    }
+                    if (plain.Contains("查看白名单"))
+                    {
+                        string xboxid = plain.Substring("添加白名单".Length); //("查询玩家");
+                        if (xboxid == String.Empty)
+                        {
+                            AllowListManager witlist = new AllowListManager();
+                            x.SendMessageAsync($"ac{witlist.AllowList}");
+                            return;
+                        }
+                    }
+                    if (plain.Contains("删除白名单"))
+                    {
+                        string xboxid = plain.Substring("删除白名单".Length); //("查询玩家");
+                        if (xboxid == String.Empty)
+                        {
+                            x.SendMessageAsync("使用方式：删除白名单[xboxid]");
+                            return;
+                        }                            
+                        else
+                        {
+                            AllowListManager mov = new AllowListManager();
+                            mov.Remove(xboxid);
+                            x.SendMessageAsync($"已经删除{xboxid}的白名单");
+                            Console.WriteLine($"已经删除{xboxid}的白名单");
+                            return;
+                        }
+                    }
+                    
+                });
             
             while (true)
             {
@@ -43,6 +99,3 @@ namespace PluginMain
         }
     }
 }
-//AllowListManager add = new AllowListManager();
-//Console.WriteLine(add.AllowList);
-//add.Add("xiaolong61042");
