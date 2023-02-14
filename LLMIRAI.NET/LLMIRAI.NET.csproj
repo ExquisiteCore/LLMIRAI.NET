@@ -13,6 +13,9 @@
       <Reference Include="Mirai.Net">
         <HintPath>..\..\..\Mirai.Net.dll</HintPath>
       </Reference>
+      <Reference Include="Newtonsoft.Json">
+        <HintPath>..\..\..\1\plugins\lib\Newtonsoft.Json.dll</HintPath>
+      </Reference>
       <Reference Include="System.Reactive">
         <HintPath>..\..\..\1\plugins\lib\System.Reactive.dll</HintPath>
       </Reference>

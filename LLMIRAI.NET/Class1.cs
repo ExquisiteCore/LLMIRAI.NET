@@ -8,16 +8,50 @@ using LiteLoader.Event;
 using Mirai.Net.Data.Messages.Concretes;
 using Mirai.Net.Data.Messages.Receivers;
 using Mirai.Net.Utils.Scaffolds;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace PluginMain
 {
+    class ReadJson
+    {
+        public static string Get_Address()
+        {
+            StreamReader reader = File.OpenText("plugins/xiangyplugins/config.json");
+            JsonTextReader jsonTextReader = new JsonTextReader(reader);
+            JObject jsonObject = (JObject)JToken.ReadFrom(jsonTextReader);
+            string server = jsonObject["Address"].ToString(); 
+            reader.Close();
+            return server;
+        }
+        public static string Get_QQ()
+        {
+            StreamReader reader = File.OpenText("plugins/xiangyplugins/config.json");
+            JsonTextReader jsonTextReader = new JsonTextReader(reader);
+            JObject jsonObject = (JObject)JToken.ReadFrom(jsonTextReader);
+            string server = jsonObject["QQ"].ToString(); //user ,passwd 类似
+            reader.Close();
+            return server;
+        }
+        public static string Get_VerifyKey()
+        {
+            StreamReader reader = File.OpenText("plugins/xiangyplugins/config.json");
+            JsonTextReader jsonTextReader = new JsonTextReader(reader);
+            JObject jsonObject = (JObject)JToken.ReadFrom(jsonTextReader);
+            string server = jsonObject["VerifyKey"].ToString(); //user ,passwd 类似
+            reader.Close();
+            return server;
+        }
+    }
     class Botqq
     {
+        
         public MiraiBot bot = new MiraiBot 
         { 
-            Address = "localhost:8080",
-            QQ = "3389583001",
-            VerifyKey = "123456789"
+            Address = ReadJson.Get_Address(),
+            QQ = ReadJson.Get_QQ(),
+            VerifyKey = ReadJson.Get_VerifyKey()
         };
         public async Task V()
         {
@@ -96,6 +130,14 @@ namespace PluginMain
             Console.WriteLine("咸鱼Plugin启动");
             Botqq a = new Botqq();
             Task.Run(a.V);
+            Console.WriteLine(ReadJson.Get_Address());
+            Console.WriteLine(ReadJson.Get_QQ());
+            Console.WriteLine(ReadJson.Get_VerifyKey());
         }
+        
+        
     }
+
+
+    
 }
