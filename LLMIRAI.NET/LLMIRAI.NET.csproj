@@ -6,4 +6,20 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Reference Include="LiteLoader.NET">
+        <HintPath>..\..\..\LiteLoader.NET.dll</HintPath>
+      </Reference>
+      <Reference Include="Mirai.Net">
+        <HintPath>..\..\..\Mirai.Net.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Reactive">
+        <HintPath>..\..\..\1\plugins\lib\System.Reactive.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Flurl" Version="3.0.7" />
+    </ItemGroup>
+
 </Project>
