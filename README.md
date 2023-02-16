@@ -109,19 +109,9 @@ adapterSettings:
 ## 安装LLMIRAI.NET
 
 
-下载压缩包后解压到plugins目录下
-​
-编辑xiangyplugins里的config.json
+下载压缩包后解压到plugins目录下开服即可会自动s配置
 
-```json
-{
-  "Address": "localhost:8080",
-  "QQ": "你的QQ",
-  "VerifyKey": "1234567890"
-}
-```
-开服即可
-一下是效果图
+以下是功能
 ![2.png](https://s2.loli.net/2023/02/14/AvmOY59ouxUGDRb.jpg)
 
 写在后面：想要的功能可以评，论望5星好评
