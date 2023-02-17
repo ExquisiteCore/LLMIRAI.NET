@@ -12,174 +12,94 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Text;
-using LiteLoader.Form;
+using Flurl;
+using Flurl.Http;
+using LiteLoader.Logger;
 
 namespace PluginMain
 {
-    class ReadJson
-    {
-        public static string Get_Address()
-        {
-            StreamReader reader = File.OpenText("plugins/xiangyplugins/config.json");
-            JsonTextReader jsonTextReader = new JsonTextReader(reader);
-            JObject jsonObject = (JObject)JToken.ReadFrom(jsonTextReader);
-            string server = jsonObject["Address"].ToString(); 
-            reader.Close();
-            return server;
-        }
-        public static string Get_QQ()
-        {
-            StreamReader reader = File.OpenText("plugins/xiangyplugins/config.json");
-            JsonTextReader jsonTextReader = new JsonTextReader(reader);
-            JObject jsonObject = (JObject)JToken.ReadFrom(jsonTextReader);
-            string server = jsonObject["QQ"].ToString(); //user ,passwd 类似
-            reader.Close();
-            return server;
-        }
-        public static string Get_VerifyKey()
-        {
-            StreamReader reader = File.OpenText("plugins/xiangyplugins/config.json");
-            JsonTextReader jsonTextReader = new JsonTextReader(reader);
-            JObject jsonObject = (JObject)JToken.ReadFrom(jsonTextReader);
-            string server = jsonObject["VerifyKey"].ToString(); //user ,passwd 类似
-            reader.Close();
-            return server;
-        }
-    }
-    class Botqq
-    {
-        
-        public MiraiBot bot = new MiraiBot 
-        { 
-            Address = ReadJson.Get_Address(),
-            QQ = ReadJson.Get_QQ(),
-            VerifyKey = ReadJson.Get_VerifyKey()
-        };
-        public async Task V()
-        {
-            await bot.LaunchAsync();
-            Console.WriteLine("启动异步");
-            
-            bot.MessageReceived
-                .OfType<FriendMessageReceiver>()
-                .Subscribe(x =>
-                {
-                    string plain = x.MessageChain.GetPlainMessage();
-                    if (plain.Contains("添加白名单"))
-                    {
-                        string xboxid = plain.Substring("添加白名单".Length); //("查询玩家");
-                        if (xboxid == String.Empty)
-                        {
-                            x.SendMessageAsync("使用方式：添加白名单[xboxid]");
-                            return;
-                        }                            
-                        else
-                        {
-                            AllowListManager add = new AllowListManager();
-                            add.Add(xboxid);
-                            Console.WriteLine(xboxid);
-                            x.SendMessageAsync($"已经添加{xboxid}的白名单");
-                            Console.WriteLine($"已经添加{xboxid}的白名单");
-                            return;
-                        }
-                    }
-                    if (plain.Contains("查看白名单"))
-                    {
-                        string xboxid = plain.Substring("添加白名单".Length); //("查询玩家");
-                        if (xboxid == String.Empty)
-                        {
-                            AllowListManager witlist = new AllowListManager();
-                            x.SendMessageAsync($"ac{witlist.AllowList}");
-                            return;
-                        }
-                    }
-                    if (plain.Contains("删除白名单"))
-                    {
-                        string xboxid = plain.Substring("删除白名单".Length); //("查询玩家");
-                        if (xboxid == String.Empty)
-                        {
-                            x.SendMessageAsync("使用方式：删除白名单[xboxid]");
-                            return;
-                        }                            
-                        else
-                        {
-                            AllowListManager mov = new AllowListManager();
-                            mov.Remove(xboxid);
-                            x.SendMessageAsync($"已经删除{xboxid}的白名单");
-                            Console.WriteLine($"已经删除{xboxid}的白名单");
-                            return;
-                        }
-                    }
-                    
-                });
-            
-            while (true)
-            {
-                if (Console.ReadLine() == "exit")
-                {
-                    return;
-                }
-            }
-        }
-    }
+
     public class Plugin
     {
-        //插件入口函数
+        public static Logger LLMIRAINET = new("LLMIRAI.NET");
+        //插件入口函数 
         public static void OnPostInit()
         {
+  
             //提供插件名、插件描述、插件版本等信息
             LLAPI.RegisterPlugin("咸鱼Plugin","一个机器人插件",new LiteLoader.Version(1,0,0));
-            Console.WriteLine("咸鱼Plugin启动");
+            LLMIRAINET.Info.WriteLine("咸鱼Plugin启动");
+            LLMIRAINET.Info.WriteLine("功能默认全部开启,请在plugins/xiangyplugins里的Function.json控制功能开关");
             
-            if (File.Exists("plugins/xiangyplugins/config.json"))
+            //文件路径
+            var Functionpath = @"plugins/xiangyplugins/Function.json";
+            var path = @"plugins/xiangyplugins/config.json";
+            var qp = @"plugins/xiangyplugins";
+            
+            if (Directory.Exists(qp))
             {
-                Console.WriteLine("好耶有配置文件！");
-                Botqq a = new Botqq();
-                Task.Run(a.V);
-                Console.WriteLine(ReadJson.Get_Address());
-                Console.WriteLine(ReadJson.Get_QQ());
-                Console.WriteLine(ReadJson.Get_VerifyKey());
+                LLMIRAINET.Info.WriteLine("配置文件存放目录存在");
             }
             else
             {
-                var path = @"plugins/xiangyplugins/config.json";
-                var qp = @"plugins/xiangyplugins";
-                Console.WriteLine("奶奶滴没有检查到配置文件！");
-                Console.WriteLine("开始初始化");
-                Console.WriteLine("请输入mirai-htttp配置的adapter默认情况下为localhost:8080");
-                string Address1 = Console.ReadLine();
-                Console.WriteLine("请输入你BOT的QQ号");
-                string QQ1 = Console.ReadLine();
-                Console.WriteLine("请输入VerifyKey(详见mirai_http配置文件)");
-                string VerifyKey1 = Console.ReadLine();
-                if (Directory.Exists(qp))
+                LLMIRAINET.Info.WriteLine("没有xiangyplugins文件夹先建一个");
+                Directory.CreateDirectory(qp);
+            }
+            
+            
+            if (File.Exists(Functionpath))
+            {
+                LLMIRAINET.Info.WriteLine("好耶有功能文件！");
+            }
+            else
+            {
+                Function function = new Function
                 {
-                    Console.WriteLine("没有xiangyplugins文件夹先建一个");
-                }
-                else
+                    identify = true,
+                    apply = true,
+                    whitelist = true,
+                    MOTD = true,
+                    Question = "你的入群问题",
+                    Answer = "你的入群答案"
+                };
+                File.WriteAllText(Functionpath, JsonConvert.SerializeObject(function));
+            }
+            if (File.Exists("plugins/xiangyplugins/config.json"))
+            {
+                Plugin.LLMIRAINET.Info.WriteLine("好耶有配置文件！");
+            }
+            else//初始化BOT
+            {
+                LLMIRAINET.Info.WriteLine("奶奶滴没有检查到配置文件！");
+                LLMIRAINET.Info.WriteLine("开始初始化");
+                LLMIRAINET.Info.WriteLine("请输入mirai-htttp配置的adapter默认情况下为localhost:8080");
+                string address = Console.ReadLine();
+                LLMIRAINET.Info.WriteLine("请输入你BOT的QQ号");
+                string qq = Console.ReadLine();
+                LLMIRAINET.Info.WriteLine("请输入VerifyKey(详见mirai_http配置文件)");
+                string verifykey = Console.ReadLine();
+                LLMIRAINET.Info.WriteLine("请输入管理员的QQ号");
+                string admin = Console.ReadLine();
+                LLMIRAINET.Info.WriteLine("请输入服务器的群号");
+                string group = Console.ReadLine();
+                
+                //实例化配置文件参数
+                config movie = new config
                 {
-                    Directory.CreateDirectory(qp);
-                }
-                data movie = new data
-                {
-                    Address= Address1,
-                    QQ = QQ1,
-                    VerifyKey= VerifyKey1
+                    Address = address,
+                    QQ = qq,
+                    VerifyKey= verifykey,
+                    Admin = admin,
+                    group = group
                 };
                 File.WriteAllText(path, JsonConvert.SerializeObject(movie));
-                Botqq a = new Botqq();
-                Task.Run(a.V);
-                Console.WriteLine(ReadJson.Get_Address());
-                Console.WriteLine(ReadJson.Get_QQ());
-                Console.WriteLine(ReadJson.Get_VerifyKey());
             }
+            //启动BOT[xiangyplugins]
+            LLMIRAINET.Info.WriteLine($"Address:  {ReadJson.Get_Address()}");
+            LLMIRAINET.Info.WriteLine($"BOT QQ:   {ReadJson.Get_QQ()}");
+            LLMIRAINET.Info.WriteLine($"VerifyKey:{ReadJson.Get_VerifyKey()}");
+            Bot bot = new Bot();
+            Task.Run(bot.Start);
         }
-        public class data
-        {
-            public string Address { get; set; }
-            public string QQ { get; set; }
-            public string VerifyKey { get; set; }
-        }
-        
     }
 }

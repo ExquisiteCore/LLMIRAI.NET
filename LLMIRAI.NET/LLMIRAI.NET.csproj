@@ -15,15 +15,16 @@
         <HintPath>..\..\..\Mirai.Net.dll</HintPath>
       </Reference>
       <Reference Include="Newtonsoft.Json">
-        <HintPath>..\..\..\1\plugins\lib\Newtonsoft.Json.dll</HintPath>
+        <HintPath>..\..\..\LLMIRAINET\lib\Newtonsoft.Json.dll</HintPath>
       </Reference>
       <Reference Include="System.Reactive">
-        <HintPath>..\..\..\1\plugins\lib\System.Reactive.dll</HintPath>
+        <HintPath>..\..\..\LLMIRAINET\lib\System.Reactive.dll</HintPath>
       </Reference>
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Flurl" Version="3.0.7" />
+      <PackageReference Include="Flurl.Http" Version="4.0.0-pre3" />
     </ItemGroup>
 
 </Project>
