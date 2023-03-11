@@ -8,23 +8,23 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Reference Include="LiteLoader.NET">
-        <HintPath>..\..\..\LiteLoader.NET.dll</HintPath>
-      </Reference>
-      <Reference Include="Mirai.Net">
-        <HintPath>..\..\..\Mirai.Net.dll</HintPath>
-      </Reference>
-      <Reference Include="Newtonsoft.Json">
-        <HintPath>..\..\..\LLMIRAINET\lib\Newtonsoft.Json.dll</HintPath>
-      </Reference>
-      <Reference Include="System.Reactive">
-        <HintPath>..\..\..\LLMIRAINET\lib\System.Reactive.dll</HintPath>
-      </Reference>
+      <PackageReference Include="Flurl" Version="3.0.7" />
+      <PackageReference Include="Flurl.Http" Version="4.0.0-pre3" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Flurl" Version="3.0.7" />
-      <PackageReference Include="Flurl.Http" Version="4.0.0-pre3" />
+      <Reference Include="LiteLoader.NET">
+        <HintPath>..\..\..\BDS\plugins\LiteLoader\LiteLoader.NET.dll</HintPath>
+      </Reference>
+      <Reference Include="Mirai.Net">
+        <HintPath>..\..\..\BDS\plugins\lib\Mirai.Net.dll</HintPath>
+      </Reference>
+      <Reference Include="Newtonsoft.Json">
+        <HintPath>..\..\..\BDS\plugins\lib\Newtonsoft.Json.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Reactive">
+        <HintPath>..\..\..\BDS\plugins\lib\System.Reactive.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

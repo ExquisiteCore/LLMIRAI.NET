@@ -1,6 +1,10 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=E_003A_005CSerein_002Dmain_005C1_005Cplugins_005Clib_005CNewtonsoft_002EJson_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=E_003A_005CSerein_002Dmain_005C1_005Cplugins_005Clib_005CSystem_002EReactive_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=E_003A_005CSerein_002Dmain_005CBDS_005Cplugins_005Clib_005CMirai_002ENet_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=E_003A_005CSerein_002Dmain_005CBDS_005Cplugins_005Clib_005CNewtonsoft_002EJson_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=E_003A_005CSerein_002Dmain_005CBDS_005Cplugins_005Clib_005CSystem_002EReactive_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=E_003A_005CSerein_002Dmain_005CBDS_005Cplugins_005CLiteLoader_005CLiteLoader_002ENET_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=E_003A_005CSerein_002Dmain_005CLiteLoader_002ENET_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=E_003A_005CSerein_002Dmain_005CLLMIRAINET_005Clib_005CNewtonsoft_002EJson_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=E_003A_005CSerein_002Dmain_005CLLMIRAINET_005Clib_005CSystem_002EReactive_002Edll/@EntryIndexedValue">True</s:Boolean>

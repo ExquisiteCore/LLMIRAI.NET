@@ -25,7 +25,6 @@ class ReadJson //读取配置文件
         reader.Close();
         return bool.Parse(server);
     }
-
     public static bool Get_MOTD()
     {
         StreamReader reader = File.OpenText("plugins/xiangyplugins/Function.json");
@@ -35,7 +34,6 @@ class ReadJson //读取配置文件
         reader.Close();
         return bool.Parse(server);
     }
-
     public static bool Get_whitelist()
     {
         StreamReader reader = File.OpenText("plugins/xiangyplugins/Function.json");
