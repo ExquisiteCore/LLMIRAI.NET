@@ -1,9 +1,13 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Text.Json.Serialization;
 
-namespace PluginMain;
+namespace XianYu;
 
+internal struct OriginalData
+{
+}
 class ReadJson //读取配置文件
 {
     public static bool Get_identify()
@@ -111,5 +115,55 @@ class ReadJson //读取配置文件
         string server = jsonObject["Question"].ToString(); //user ,passwd 类似
         reader.Close();
         return server;
+    }
+    public static void remove_xboxid(string a)
+    {
+        string json = File.ReadAllText("plugins/xiangyplugins/QQ_data.json");
+        JArray jarr = new JArray() ;
+        jarr = JArray.Parse(json);
+        
+        IList<JToken> _ILIST = new List<JToken>(); //存储需要删除的项
+        JArray _JARRAY = new JArray();
+
+        foreach (var ss in jarr) //查找某个字段与值
+        {
+            if ((((JObject)ss)["XboxId"]).ToString() == $"{a}")
+            {
+                _ILIST.Add(ss);
+            }
+        }
+        foreach (var item in _ILIST)  //移除mJObj  有效
+        {
+            jarr.Remove(item);
+        }
+        var path = @"plugins/xiangyplugins/QQ_data.json";
+        string convertString = Convert.ToString(jarr);//将json装换为string
+        File.WriteAllText(path, convertString,System.Text.Encoding.UTF8);//将内容写进jon文件中
+    }
+    public static bool Get_User(string a)
+    {
+        string json = File.ReadAllText("plugins/xiangyplugins/QQ_data.json");
+        JArray jarr = new JArray() ;
+        jarr = JArray.Parse(json);
+        foreach (var j in jarr)
+        {
+            string QQ = j["QQ"].ToString();
+            if (QQ == $"{a}")
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static void Add_User(string QQ , string xboxid)
+    {
+        string json = File.ReadAllText("plugins/xiangyplugins/QQ_data.json");
+        JArray jarr = new JArray() ;
+        jarr = JArray.Parse(json);
+        var mark = new JObject { { "QQ", $"{QQ}" },{"XboxId",$"{xboxid}"} };
+        jarr.Add(mark);
+        var path = @"plugins/xiangyplugins/QQ_data.json";
+        string convertString = Convert.ToString(jarr);//将json装换为string
+        File.WriteAllText(path, convertString,System.Text.Encoding.UTF8);//将内容写进jon文件中
     }
 }

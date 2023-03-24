@@ -15,7 +15,7 @@ using System.Text;
 using Flurl;
 using Flurl.Http;
 
-namespace PluginMain
+namespace XianYu
 { 
     public class initialization
     {
@@ -31,18 +31,18 @@ namespace PluginMain
 
             if (Directory.Exists(qp))
             {
-                Plugin.cw.Info.WriteLine("配置文件存放目录存在");
+                LLMIRAINET.cw.Info.WriteLine("配置文件存放目录存在");
             }
             else
             {
-                Plugin.cw.Info.WriteLine("没有配置文件存放目录,勉强给你建一个吧");
+                LLMIRAINET.cw.Info.WriteLine("没有配置文件存放目录,勉强给你建一个吧");
                 Directory.CreateDirectory(qp);
             }
 
 
             if (File.Exists(Functionpath))
             {
-                Plugin.cw.Info.WriteLine("好耶有功能文件！");
+                LLMIRAINET.cw.Info.WriteLine("好耶有功能文件！");
             }
             else
             {
@@ -57,24 +57,36 @@ namespace PluginMain
                 };
                 File.WriteAllText(Functionpath, JsonConvert.SerializeObject(function));
             }
-
+            if (File.Exists("plugins/xiangyplugins/QQ_data.json"))
+            {
+                LLMIRAINET.cw.Info.WriteLine("好耶有用户数据文件！");
+            }
+            else
+            {
+                JArray jarr = new JArray() ;
+                string jsonText = "[{\"QQ\": \"T\", \"XboxId\": \"T\"}]";
+                jarr = JArray.Parse(jsonText);
+                var d = @"plugins/xiangyplugins/QQ_data.json";
+                string convertString = Convert.ToString(jarr);//将json装换为string
+                File.WriteAllText(d, convertString,System.Text.Encoding.UTF8);//将内容写进jon文件中
+            }
             if (File.Exists("plugins/xiangyplugins/config.json"))
             {
-                Plugin.cw.Info.WriteLine("好耶有配置文件！");
+                LLMIRAINET.cw.Info.WriteLine("好耶有配置文件！");
             }
             else //初始化BOT
             {
-                Plugin.cw.Info.WriteLine("奶奶滴没有检查到配置文件！");
-                Plugin.cw.Info.WriteLine("开始初始化");
-                Plugin.cw.Info.WriteLine("请输入mirai-htttp配置的adapter默认情况下为localhost:8080");
+                LLMIRAINET.cw.Info.WriteLine("奶奶滴没有检查到配置文件！");
+                LLMIRAINET.cw.Info.WriteLine("开始初始化");
+                LLMIRAINET.cw.Info.WriteLine("请输入mirai-htttp配置的adapter默认情况下为localhost:8080");
                 string address = Console.ReadLine();
-                Plugin.cw.Info.WriteLine("请输入你BOT的QQ号");
+                LLMIRAINET.cw.Info.WriteLine("请输入你BOT的QQ号");
                 string qq = Console.ReadLine();
-                Plugin.cw.Info.WriteLine("请输入VerifyKey(详见mirai_http配置文件)");
+                LLMIRAINET.cw.Info.WriteLine("请输入VerifyKey(详见mirai_http配置文件)");
                 string verifykey = Console.ReadLine();
-                Plugin.cw.Info.WriteLine("请输入管理员的QQ号");
+                LLMIRAINET.cw.Info.WriteLine("请输入管理员的QQ号");
                 string admin = Console.ReadLine();
-                Plugin.cw.Info.WriteLine("请输入服务器的群号");
+                LLMIRAINET.cw.Info.WriteLine("请输入服务器的群号");
                 string group = Console.ReadLine();
 
                 //实例化配置文件参数

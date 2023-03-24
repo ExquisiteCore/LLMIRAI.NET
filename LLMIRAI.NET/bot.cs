@@ -17,7 +17,7 @@ using Flurl.Http;
 using Mirai.Net.Data.Events.Concretes.Request;
 using Mirai.Net.Sessions.Http.Managers;
 
-namespace PluginMain
+namespace XianYu
 {
     class Bot
     {
@@ -30,11 +30,11 @@ namespace PluginMain
         public async Task Start()
         {
             await bot.LaunchAsync();
-            Plugin.cw.Info.WriteLine("BOT开启");
+            LLMIRAINET.cw.Info.WriteLine("BOT开启");
             
             if (ReadJson.Get_whitelist()) //whitelist
             {
-                Plugin.cw.Info.WriteLine("管理白名单功能已经开启");// if (x.FriendId == ReadJson.Get_Admin())
+                LLMIRAINET.cw.Info.WriteLine("管理白名单功能已经开启");// if (x.FriendId == ReadJson.Get_Admin())
                 bot.MessageReceived
                 .OfType<FriendMessageReceiver>()
                 .Subscribe(x =>
@@ -55,7 +55,7 @@ namespace PluginMain
                                 AllowListManager add = new AllowListManager();
                                 add.Add(xboxid);
                                 x.SendMessageAsync($"已经添加{xboxid}的白名单");
-                                Plugin.cw.Info.WriteLine($"已经添加{xboxid}的白名单");
+                                LLMIRAINET.cw.Info.WriteLine($"已经添加{xboxid}的白名单");
                                 return;
                             }
                         }
@@ -84,7 +84,7 @@ namespace PluginMain
                                 AllowListManager mov = new AllowListManager();
                                 mov.Remove(xboxid);
                                 x.SendMessageAsync($"已经删除{xboxid}的白名单");
-                                Plugin.cw.Info.WriteLine($"已经删除{xboxid}的白名单");
+                                LLMIRAINET.cw.Info.WriteLine($"已经删除{xboxid}的白名单");
                                 return;
                             }
                         }
@@ -111,7 +111,7 @@ namespace PluginMain
                                 AllowListManager add = new AllowListManager();
                                 add.Add(xboxid);
                                 x.SendMessageAsync($"已经添加{xboxid}的白名单");
-                                Plugin.cw.Info.WriteLine($"已经添加{xboxid}的白名单");
+                                LLMIRAINET.cw.Info.WriteLine($"已经添加{xboxid}的白名单");
                                 return;
                             }
                         }
@@ -140,18 +140,18 @@ namespace PluginMain
                                 AllowListManager mov = new AllowListManager();
                                 mov.Remove(xboxid);
                                 x.SendMessageAsync($"已经删除{xboxid}的白名单");
-                                Plugin.cw.Info.WriteLine($"已经删除{xboxid}的白名单");
+                                LLMIRAINET.cw.Info.WriteLine($"已经删除{xboxid}的白名单");
                                 return;
                             }
                         }
                     }
                 });
             }
-            else { Plugin.cw.Info.WriteLine("管理白名单功能已经关闭"); }
+            else { LLMIRAINET.cw.Info.WriteLine("管理白名单功能已经关闭"); }
 
             if (ReadJson.Get_MOTD())//MOTD
             {
-                Plugin.cw.Info.WriteLine("MOTD功能已经开启");
+                LLMIRAINET.cw.Info.WriteLine("MOTD功能已经开启");
                 bot.MessageReceived
                     .OfType<GroupMessageReceiver>()
                     .Subscribe(x =>
@@ -238,11 +238,11 @@ namespace PluginMain
                         }
                     });
             }
-            else { Plugin.cw.Info.WriteLine("MOTD功能已经关闭"); }
+            else { LLMIRAINET.cw.Info.WriteLine("MOTD功能已经关闭"); }
 
             if (ReadJson.Get_apply())
             {
-                Plugin.cw.Info.WriteLine("申请白名单功能已经开启");
+                LLMIRAINET.cw.Info.WriteLine("申请白名单功能已经开启");
                 bot.MessageReceived
                     .OfType<GroupMessageReceiver>()
                     .Subscribe(x =>
@@ -258,20 +258,43 @@ namespace PluginMain
                             }
                             else
                             {
-                                AllowListManager add = new AllowListManager();
-                                add.Add(xboxid);
-                                x.SendMessageAsync($"已经添加{xboxid}的白名单");
-                                Console.WriteLine($"已经添加{xboxid}的白名单");
+                                if (ReadJson.Get_User($"{x.Sender.Id}"))
+                                {
+                                    x.SendMessageAsync("你已经申请过白名单了，请先解绑(解绑白名单[xboxid])");
+                                }
+                                else
+                                {
+                                    ReadJson.Add_User(x.Sender.Id,xboxid);
+                                    AllowListManager add = new AllowListManager();
+                                    add.Add(xboxid);
+                                    x.SendMessageAsync($"已经添加{xboxid}的白名单");
+                                    LLMIRAINET.cw.Info.WriteLine($"已经添加{xboxid}的白名单");
+                                }
                                 return;
                             }
                         }
+                        if (plain.Contains("解绑白名单"))
+                        {
+                            string id = plain.Substring("解绑白名单".Length);
+                            if (id == String.Empty)
+                            {
+                                x.SendMessageAsync("使用方式：解绑白名单[xboxid]");
+                                return;
+                            }
+                            else
+                            {
+                                ReadJson.remove_xboxid(id);
+                                x.SendMessageAsync("你已经解绑白名单了");
+                            }
+                            return;
+                        }
                     });
             }
-            else { Plugin.cw.Info.WriteLine("申请白名单功能已经关闭"); }
+            else { LLMIRAINET.cw.Info.WriteLine("申请白名单功能已经关闭"); }
 
             if (ReadJson.Get_identify())
             {
-                Plugin.cw.Info.WriteLine("入群审核功能已经开启");
+                LLMIRAINET.cw.Info.WriteLine("入群审核功能已经开启");
                 bot.EventReceived
                     .OfType<NewMemberRequestedEvent>()
                     .Subscribe(x =>
@@ -280,7 +303,7 @@ namespace PluginMain
                         if (x.GroupId == g)
                         {
                             x.ApproveAsync();
-                            Plugin.cw.Info.WriteLine($"{x.Nick}加群了");
+                            LLMIRAINET.cw.Info.WriteLine($"{x.Nick}加群了");
                             Thread.Sleep(500); 
                             MessageManager.SendGroupMessageAsync(g,$"请回答问题:{ReadJson.Get_Question()}");
                             Thread.Sleep(500); 
@@ -312,7 +335,7 @@ namespace PluginMain
                         }
                     });
             }
-            else { Plugin.cw.Info.WriteLine("入群审核功能已经关闭"); }
+            else { LLMIRAINET.cw.Info.WriteLine("入群审核功能已经关闭"); }
             
             /*while (true)
             {
